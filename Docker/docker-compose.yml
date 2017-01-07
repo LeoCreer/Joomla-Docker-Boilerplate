@@ -1,0 +1,33 @@
+joomla:
+  image: joomla
+  links:
+    - joomladb:mysql
+  ports:
+    - 8080:80
+  volumes:
+    -  ../html:/var/www/html
+  environment:
+    JOOMLA_DB_PASSWORD: "yourpassword"
+  restart: always
+
+joomladb:
+  image: mysql:5.6
+  environment:
+    MYSQL_ROOT_PASSWORD: "yourpassword"
+  volumes:
+    - ../DB/mysql:/var/lib/mysql
+  ports:
+    - 10306:3306
+  restart: always
+
+phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+     - PMA_ARBITRARY=1
+    restart: always
+    ports:
+     - 8081:80
+    volumes:
+     - /DB/session:/sessions
+    links:
+     - joomladb:mysql
